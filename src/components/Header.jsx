@@ -1,21 +1,67 @@
 import React, { useRef, useState } from "react";
 import { validation } from "../utils/Validation";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/fireBase";
+import { useNavigate } from "react-router";
 
 const Header = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState();
+  const navigate = useNavigate();
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
   const handleValidation = () => {
     //Validation Function
     const message = validation(
-      name.current.value,
+      name?.current?.value ,
       email.current.value,
       password.current.value
     );
 
     setErrorMessage(message);
+    if (message) return;
+
+    //Sign In Sign Up Logic
+    if (!isSignInForm) {
+      //Sign Up Logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          // const errorCode = error.code;
+          const errorMessage = error.message;
+          // console.log(errorCode);
+          // console.log(errorMessage);
+          setErrorMessage(errorMessage);
+        });
+    } else {
+      //Sign In Logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          setErrorMessage(errorMessage);
+        });
+    }
   };
 
   const toggleIsSignInForm = () => {
