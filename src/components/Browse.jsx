@@ -2,19 +2,21 @@ import { signOut } from "firebase/auth";
 import React from "react";
 import { auth } from "../utils/fireBase";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const Browse = () => {
   const navigate = useNavigate();
+  const user = useSelector((store) => store.user);
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        navigate("/")
+        navigate("/");
       })
       .catch((error) => {
         // An error happened.
-        navigate("/error")
+        navigate("/error");
       });
   };
   return (
@@ -26,9 +28,10 @@ const Browse = () => {
           alt="logo"
         />
         <div className="flex justify-between items-center px-2 ">
+          <span className="px-3  font-bold ">{user?.displayName}</span>
           <img
-            className="w-12 h-12  "
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRKNdKRIgbcMkyGq1cQeq40IA-IQS-FDWnTQ&s"
+            className="w-12 h-12 rounded-full  "
+            src={user?.photoURL}
             alt="userIcon"
           />
           <button

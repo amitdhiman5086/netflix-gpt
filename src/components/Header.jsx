@@ -3,21 +3,25 @@ import { validation } from "../utils/Validation";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/fireBase";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/Store/UserSlice";
 
 const Header = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
   const handleValidation = () => {
     //Validation Function
     const message = validation(
-      name?.current?.value ,
+      name?.current?.value,
       email.current.value,
       password.current.value
     );
@@ -35,8 +39,30 @@ const Header = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
+          updateProfile(auth.currentUser, {
+            displayName: name?.current?.value,
+            photoURL: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+          })
+            .then(() => {
+              // Profile updated!
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              // ...
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              // ...
+              setErrorMessage(error.message);
+            });
           console.log(user);
-          navigate("/browse");
         })
         .catch((error) => {
           // const errorCode = error.code;
