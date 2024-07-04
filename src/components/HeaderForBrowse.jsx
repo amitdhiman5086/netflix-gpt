@@ -30,7 +30,7 @@ const HeaderForBrowse = () => {
             alt="logo"
           />
           <div className="flex justify-between items-center px-2 ">
-            <span className="px-3  font-bold ">{user?.displayName}</span>
+            <span className="px-3 text-white font-bold ">{user?.displayName}</span>
             <img
               className="w-12 h-12 rounded-full  "
               src={user?.photoURL}
