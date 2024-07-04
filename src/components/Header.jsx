@@ -1,19 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { validation } from "../utils/Validation";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/fireBase";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { addUser } from "../utils/Store/UserSlice";
+import { addUser, removeUser } from "../utils/Store/UserSlice";
+import { LOGO } from "../utils/Constant";
 
 const Header = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState();
-  const navigate = useNavigate();
+  const nevigate = useNavigate();
   const dispatch = useDispatch();
   const name = useRef(null);
   const email = useRef(null);
@@ -55,7 +57,6 @@ const Header = () => {
                 })
               );
               // ...
-              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -77,18 +78,39 @@ const Header = () => {
         auth,
         email.current.value,
         password.current.value
-      )
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          setErrorMessage(errorMessage);
-        });
+      ).catch((error) => {
+        const errorMessage = error.message;
+        setErrorMessage(errorMessage);
+      });
     }
   };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const { uid, email, displayName, photoURL } = user;
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+        nevigate("/browse");
+
+        // ...
+      } else {
+        // User is signed out
+        // ...
+
+        dispatch(removeUser());
+        nevigate("/");
+      }
+    });
+  }, []);
 
   const toggleIsSignInForm = () => {
     setIsSignInForm(!isSignInForm);
@@ -98,7 +120,7 @@ const Header = () => {
       <div className="absolute px-8 py-2 bg-gradient-to-b from-black w-full">
         <img
           className="w-44"
-          src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+          src= {LOGO}
           alt="logo"
         />
       </div>
