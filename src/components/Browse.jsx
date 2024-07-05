@@ -5,18 +5,24 @@ import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 
 import { addUser, removeUser } from "../utils/Store/UserSlice";
-import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
+import useNowPlayingMovies, {
+  usePopularMovies,
+  useTopRatedMovies,
+  useUpcominMovies,
+} from "../hooks/useNowPlayingMovies";
 import HeaderForBrowse from "./HeaderForBrowse";
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 
 const Browse = () => {
   const nevigate = useNavigate();
-  
+
   const dispatch = useDispatch();
 
   useNowPlayingMovies();
-
+  useUpcominMovies();
+  useTopRatedMovies();
+  usePopularMovies();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -45,7 +51,6 @@ const Browse = () => {
 
     return () => unsubscribe();
   }, []);
-
 
   return (
     <>
