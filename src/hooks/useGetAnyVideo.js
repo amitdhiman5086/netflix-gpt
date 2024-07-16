@@ -1,5 +1,5 @@
 import { API_OPTONS } from "../utils/Constant";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   addCurrentWatching,
   removeCurrentWatching,
@@ -19,8 +19,8 @@ export const useGetAnyVideo = (movieId) => {
 
     console.log(json);
 
-    const filterData = json.results.filter((video) => video.type === "Trailer");
-    const trailer = filterData.length ? filterData[0] : json.results[0];
+
+    const trailer =  json?.results?.[0];
     dispatch(addCurrentWatching(trailer));
   };
 

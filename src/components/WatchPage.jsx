@@ -62,7 +62,7 @@ const WatchPage = () => {
           </h1>
           <div className="">
             <h1 className="text-2xl font-semibold my-3">Genres</h1>
-            {movieDetails.genres.map((item) => (
+            {movieDetails?.genres?.map((item) => (
               <h1 className="ml-8 text-xl font-semibold my-3">👉🏻{item.name}</h1>
             ))}
           </div>
