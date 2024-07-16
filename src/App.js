@@ -6,8 +6,12 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <Provider store={store}>
-      <Body />
-      <Footer/>
+      <div className="min-h-screen ">
+        <Body />
+        <div className="mt-auto">
+          <Footer />
+        </div>
+      </div>
     </Provider>
   );
 }

@@ -2,7 +2,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect } from "react";
 import { auth } from "../utils/fireBase";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { addUser, removeUser } from "../utils/Store/UserSlice";
 import useNowPlayingMovies, {
@@ -13,9 +13,12 @@ import useNowPlayingMovies, {
 import HeaderForBrowse from "./HeaderForBrowse";
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
+import GptSearch from "./GptSearch";
 
 const Browse = () => {
   const nevigate = useNavigate();
+
+  const isShow = useSelector((store) => store.gpt.isShow);
 
   const dispatch = useDispatch();
 
@@ -55,8 +58,14 @@ const Browse = () => {
   return (
     <>
       <HeaderForBrowse />
-      <MainContainer />
-      <SecondaryContainer />
+      {isShow ? (
+        <GptSearch />
+      ) : (
+        <>
+          <MainContainer />
+          <SecondaryContainer />
+        </>
+      )}
     </>
   );
 };

@@ -2,10 +2,16 @@ import { signOut } from "firebase/auth";
 import React from "react";
 import { useNavigate } from "react-router";
 import { auth } from "../utils/fireBase";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleIsShow } from "../utils/Store/GptSlice";
+import { LANGUAGE_SUPPORT } from "../utils/Constant";
+import { changeLanguage } from "../utils/Store/ConfigSlice";
 
 const HeaderForBrowse = () => {
+  const isShow = useSelector((store) => store.gpt.isShow);
+ 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
   const handleSignOut = () => {
@@ -20,6 +26,16 @@ const HeaderForBrowse = () => {
       });
   };
 
+  const handleGptComponent = () => {
+    dispatch(toggleIsShow());
+  };
+
+  const handleLanguageChange = (e)=>{
+
+    dispatch(changeLanguage(e.target.value))
+
+  }
+
   return (
     <div className="">
       <div className="absolute z-20">
@@ -30,7 +46,22 @@ const HeaderForBrowse = () => {
             alt="logo"
           />
           <div className="flex justify-between items-center px-2 ">
-            <span className="px-3 text-white font-bold ">{user?.displayName}</span>
+            {isShow && (
+              <select className="px-4 py-3 rounded-md bg-gray-900 text-white " onChange={handleLanguageChange}>
+                {LANGUAGE_SUPPORT.map((language ,index)=>(
+                  <option  value={language.identifer} key={index}>{language.name}</option>
+                ))}
+              </select>
+            )}
+            <button
+              onClick={handleGptComponent}
+              className="px-4 py-3 mx-12 rounded-md bg-violet-500 text-white"
+            >
+              {isShow ? "Close GPT" : "Show GPT"}
+            </button>
+            <span className="px-3 text-white font-bold ">
+              {user?.displayName}
+            </span>
             <img
               className="w-12 h-12 rounded-full  "
               src={user?.photoURL}

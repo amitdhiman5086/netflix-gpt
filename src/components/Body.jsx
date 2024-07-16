@@ -15,7 +15,7 @@ const Body = () => {
       element: <Browse />,
     },
     {
-      path: "/error",
+      path: "*",
       element: <ErrorPage />,
     },
   ]);
