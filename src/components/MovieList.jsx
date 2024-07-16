@@ -10,7 +10,7 @@ const MovieList = ({ title1, movies }) => {
       <h1 className="py-4 px-2 font-bold text-3xl text-white">{title1}</h1>
       <div className="overflow-x-auto">
         <div className="inline-flex">
-          {movies.map((movie) => (
+          {movies?.map((movie) => (
             <Link to={"/watch?id=" + movie.id} key={movie.id}>
               {" "}
               <MovieCard
