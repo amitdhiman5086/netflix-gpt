@@ -39,7 +39,7 @@ const WatchPage = () => {
         <div className="w-[70%] h-[50%] m-4 p-2 bg-black rounded-md">
           <iframe
             className="w-full aspect-video"
-            src={"https://www.youtube.com/embed/" + trailerVideo?.key + ""}
+            src={"https://www.youtube.com/embed/" + trailerVideo?.key + "?&autoplay=1&mute=1"}
             //  for Auto Play  ?&autoplay=1&mute=1
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
