@@ -34,13 +34,13 @@ const GptSearchBar = () => {
     const result = await model.generateContent(prompt);
     const response = result.response;
     const text = response.text().split(",");
-    console.log(text);
+    // console.log(text);
 
     const promiseArray = text.map((movie) => searchMovieTMDB(movie));
 
     const tmdbResults = await Promise.all(promiseArray);
 
-    console.log(tmdbResults);
+    // console.log(tmdbResults);
 
     dispatch(addGptSearchMovies({movies:text , moviesResults : tmdbResults}));
   };

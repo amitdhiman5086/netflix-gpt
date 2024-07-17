@@ -17,7 +17,7 @@ export const useGetAnyVideo = (movieId) => {
     );
     const json = await data.json();
 
-    console.log(json);
+    // console.log(json);
 
 
     const trailer =  json?.results?.[0];
