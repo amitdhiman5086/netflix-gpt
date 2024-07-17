@@ -6,9 +6,9 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <Provider store={store}>
-      <div className="min-h-screen ">
+      <div className="min-h-screen max-w-screen ">
         <Body />
-        <div className="mt-auto">
+        <div className="m-auto mb-0">
           <Footer />
         </div>
       </div>

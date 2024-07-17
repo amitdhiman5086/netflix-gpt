@@ -56,7 +56,7 @@ const Browse = () => {
   }, []);
 
   return (
-    <>
+    <div className="w-full">
       <HeaderForBrowse />
       {isShow ? (
         <GptSearch />
@@ -66,7 +66,7 @@ const Browse = () => {
           <SecondaryContainer />
         </>
       )}
-    </>
+    </div>
   );
 };
 
